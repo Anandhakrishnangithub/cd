@@ -1,0 +1,35 @@
+#include <stdio.h>
+#include <string.h>
+char expr[50];
+char temp = 'Z';
+void gen_code(char op) {
+    char temp_expr[50];
+    int i = 0, j = 0;
+    while (expr[i] != '\0') {
+        if (expr[i] == op) {
+            printf("\t%c := %c %c %c\n", temp, expr[i - 1], op, expr[i + 1]);
+            temp_expr[j - 1] = temp;
+            i += 2;
+            temp--;
+        } else {
+            temp_expr[j] = expr[i];
+            i++;
+            j++;
+        }
+    }
+    temp_expr[j] = '\0';
+    strcpy(expr, temp_expr);
+}
+int main() {
+    printf("Enter the expression: ");
+    scanf("%s", expr);
+    printf("Intermediate code:\n");
+    gen_code('/');
+    gen_code('*');
+    gen_code('+');
+    gen_code('-');
+    if (strchr(expr, '=') != NULL) {
+        printf("\t%c := %c\n", expr[0], expr[2]);
+    }
+    return 0;
+}
